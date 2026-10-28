@@ -160,10 +160,15 @@ export class Welcome {
         this.actor.connect('button-release-event', (actor, event) => this._release(event));
         this.actor.connect('leave-event', () => this._hover(false));
 
-        // Centred on the display under the pointer.
+        // Centred on the display under the pointer. It floats over the windows but stays under the lock screen and
+        // under the system's own dialogs, such as the keyring asking for a password at login, which must never be
+        // hidden: they hold the keyboard and mouse until they are answered.
         const monitor = global.display.get_current_monitor();
         const area = Main.layoutManager.getWorkAreaForMonitor(monitor);
-        Main.layoutManager.addTopChrome(this.actor);
+        Main.layoutManager.addChrome(this.actor);
+        const shield = Main.layoutManager.screenShieldGroup;
+        if (shield?.get_parent() === Main.layoutManager.uiGroup)
+            Main.layoutManager.uiGroup.set_child_below_sibling(this.actor, shield);
         this.actor.set_position(
             Math.round(area.x + (area.width - this.actor.width) / 2),
             Math.round(area.y + (area.height - this.actor.height) / 2));
@@ -273,9 +278,11 @@ export class Welcome {
     }
 
     _press(event) {
-        if (this._timeline || event.get_button() !== Clutter.BUTTON_PRIMARY)
+        // While a system dialog or the lock screen holds the input, the card stays out of the way.
+        if (this._timeline || event.get_button() !== Clutter.BUTTON_PRIMARY || Main.modalCount > 0)
             return Clutter.EVENT_PROPAGATE;
         const [, over] = this._point(event);
+        this._endGrab();
         this._grab = global.stage.grab(this.actor);
         if (over) {
             this._holding = true;

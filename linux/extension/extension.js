@@ -67,7 +67,11 @@ export default class SnowhushExtension extends Extension {
         this._sessionChanged();
         this._updates = new Updates(this);
         if (!this._settings.get_boolean('welcomed')) {
+            // The welcome waits for a quiet desktop: not the lock screen, not a system dialog such as the keyring
+            // asking for its password at login, and not the login animation.
             this._welcomeTimer = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 1200, () => {
+                if (Main.sessionMode.isLocked || Main.modalCount > 0 || Main.layoutManager._startingUp)
+                    return GLib.SOURCE_CONTINUE;
                 this._welcomeTimer = 0;
                 this._welcome();
                 return GLib.SOURCE_REMOVE;
@@ -102,9 +106,6 @@ export default class SnowhushExtension extends Extension {
     }
 
     _welcome() {
-        // Not over the lock screen: it waits for the next login instead.
-        if (Main.sessionMode.isLocked)
-            return;
         try {
             this._welcomeCard = new Welcome(this, {
                 scatter: pieces => this.snow?.scatter(pieces),

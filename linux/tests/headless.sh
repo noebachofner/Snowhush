@@ -47,15 +47,25 @@ chmod +x "$work/eval" "$work/screenshot"
 export SHELL_EVAL=$work/eval SCREENSHOT=$work/screenshot SHELL_LOG=$work/shell.log
 
 # Without a system bus, GNOME Shell must not take the machine for one running systemd-logind.
+# SNOWHUSH_LOCKABLE=1 keeps it, with a stand-in for GDM, so the shell offers its lock screen.
 hide_logind=()
-if [[ -d /run/systemd/seats ]] && ! gdbus introspect --system --dest org.freedesktop.login1 --object-path / > /dev/null 2>&1; then
+if [[ -z ${SNOWHUSH_LOCKABLE:-} && -d /run/systemd/seats ]] &&
+    ! gdbus introspect --system --dest org.freedesktop.login1 --object-path / > /dev/null 2>&1; then
     hide_logind=(unshare --mount bash -c 'mount -t tmpfs none /run/systemd && exec "$@"' bash)
 fi
 
 "${hide_logind[@]}" dbus-run-session -- bash -c '
     # A bus of its own stands in for the system bus, which a container may not have.
     if ! gdbus introspect --system --dest org.freedesktop.DBus --object-path / > /dev/null 2>&1; then
-        export DBUS_SYSTEM_BUS_ADDRESS=$(dbus-daemon --session --fork --print-address --address=unix:path=$XDG_RUNTIME_DIR/system_bus)
+        dbus-daemon --session --nofork --address=unix:path=$XDG_RUNTIME_DIR/system_bus > /dev/null 2>&1 &
+        system_bus=$!
+        export DBUS_SYSTEM_BUS_ADDRESS=unix:path=$XDG_RUNTIME_DIR/system_bus
+        for _ in $(seq 50); do [[ -S $XDG_RUNTIME_DIR/system_bus ]] && break; sleep 0.1; done
+        if [[ -n ${SNOWHUSH_LOCKABLE:-} ]]; then
+            gjs -m "'"$here"'/tests/fake-gdm.js" > /dev/null 2>&1 &
+            gdm=$!
+            sleep 0.5
+        fi
     fi
     gnome-shell --headless --wayland --no-x11 --force-animations '"$monitors"' > "$SHELL_LOG" 2>&1 &
     shell=$!
@@ -76,5 +86,6 @@ fi
     status=0
     "$@" || status=$?
     kill $shell 2>/dev/null; wait $shell 2>/dev/null
+    kill ${gdm:-} ${system_bus:-} 2>/dev/null
     exit $status
 ' bash "$@"
