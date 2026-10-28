@@ -11,14 +11,16 @@
   &nbsp;·&nbsp;
   <a href="https://github.com/mbezruchko/Snowhush/releases/latest/download/Snowhush-Setup.exe"><b>Download for Windows</b></a>
   &nbsp;·&nbsp;
+  <a href="linux/README.md"><b>Install on Linux</b></a>
+  &nbsp;·&nbsp;
   <a href="https://snowhush.pages.dev">snowhush.pages.dev</a>
   <br>
-  <sub>macOS 14 or later · Windows 10 or 11 · free and open source</sub>
+  <sub>macOS 14 or later · Windows 10 or 11 · GNOME 46, such as Zorin OS 18 · free and open source</sub>
 </p>
 
 https://github.com/user-attachments/assets/291c3cd5-3563-4b86-8b66-dfd924f980fc
 
-A tiny app that lives in the menu bar on macOS and in the tray on Windows. Soft snow drifts across your screen, settles along the tops of your windows and slips off when you drag them. Sweep the drift aside with your cursor.
+A tiny app that lives in the menu bar on macOS and in the tray on Windows and Linux. Soft snow drifts across your screen, settles along the tops of your windows and slips off when you drag them. Sweep the drift aside with your cursor.
 
 ## What the snow does
 
@@ -38,6 +40,7 @@ Everything else lives in the menu bar: Snowfall (Off, Light, Steady, Heavy, Vari
 ./build.sh            # build/Snowhush.app, signed ad hoc
 open build/Snowhush.app
 windows/build.sh      # dist/Snowhush-Setup.exe, cross-compiled from macOS
+linux/install.sh      # the GNOME Shell extension, installed for this user: see linux/README.md
 ```
 
 ## License

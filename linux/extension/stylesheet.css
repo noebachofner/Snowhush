@@ -1,0 +1,15 @@
+.snowhush-header {
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+.snowhush-slider-item {
+  padding-top: 4px;
+  padding-bottom: 6px;
+  min-width: 15em;
+}
+
+.snowhush-caption {
+  font-size: 0.85em;
+  padding-top: 4px;
+}

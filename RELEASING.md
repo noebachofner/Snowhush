@@ -17,6 +17,10 @@ One-time setup on the release machine:
 
 `windows/` is the Windows app in Rust, cross-compiled from the Mac. `windows/build.sh` builds it and its installer, which carries the app, into `dist/Snowhush-Setup.exe`. The installer works per user, without administrator rights, and `Snowhush.exe --uninstall` removes it again; `cd windows && cargo test --lib` runs the simulation tests natively. The installer is unsigned, so SmartScreen may warn before running it.
 
+## Linux
+
+`linux/` is the GNOME Shell extension, in plain JavaScript with nothing to build: see [linux/README.md](linux/README.md). `release.sh` keeps its version in `linux/extension/metadata.json` with the others; the extension checks for updates by comparing that version with the one on the repository's default branch. `linux/build.sh` packs it into a `.shell-extension.zip`, and `gjs -m linux/tests/simulation.test.js` runs its simulation tests.
+
 ## Site
 
 `site/` is a static page served by Cloudflare Pages at [snowhush.pages.dev](https://snowhush.pages.dev): no build command, output directory `site`. Every push to `main` deploys it.

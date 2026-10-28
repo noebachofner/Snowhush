@@ -1,0 +1,12 @@
+{
+  "uuid": "snowhush-test-helper@snowhush.pages.dev",
+  "name": "Snowhush test helper",
+  "description": "Turns on GNOME Shell's unsafe mode so the headless tests can drive the shell over D-Bus. For development only.",
+  "shell-version": [
+    "46"
+  ],
+  "session-modes": [
+    "user",
+    "unlock-dialog"
+  ]
+}

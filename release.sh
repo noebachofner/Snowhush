@@ -52,6 +52,11 @@ if [[ "$(sed -n 's/^version = "\(.*\)"$/\1/p' "$cargo_toml" | head -1)" != "$ver
     (cd windows && cargo update --workspace --offline -q)
     bumped+=("$cargo_toml" windows/Cargo.lock)
 fi
+metadata=linux/extension/metadata.json
+if [[ "$(sed -n 's/.*"version-name": "\(.*\)".*/\1/p' "$metadata")" != "$version" ]]; then
+    sed -i '' "s/\"version-name\": \".*\"/\"version-name\": \"$version\"/" "$metadata"
+    bumped+=("$metadata")
+fi
 (( ${#bumped} )) && git commit -qm "chore: release v$version" "${bumped[@]}"
 
 ./build.sh

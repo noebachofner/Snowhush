@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <enum id="org.gnome.shell.extensions.snowhush.Snowfall">
+    <value nick="off" value="0"/>
+    <value nick="light" value="1"/>
+    <value nick="steady" value="2"/>
+    <value nick="heavy" value="3"/>
+    <value nick="variable" value="4"/>
+  </enum>
+  <schema id="org.gnome.shell.extensions.snowhush" path="/org/gnome/shell/extensions/snowhush/">
+    <key name="snowfall" enum="org.gnome.shell.extensions.snowhush.Snowfall">
+      <default>'steady'</default>
+      <summary>Snowfall</summary>
+      <description>How much snow falls. Variable lets the snowfall rise and ease on its own over the day.</description>
+    </key>
+    <key name="accumulate" type="b">
+      <default>true</default>
+      <summary>Accumulate</summary>
+      <description>Snow piles up on the ground and on windows.</description>
+    </key>
+    <key name="melt-snow" type="b">
+      <default>true</default>
+      <summary>Melt Snow</summary>
+      <description>The drift thaws slowly, so it never takes over the screen.</description>
+    </key>
+    <key name="snow-on-windows" type="b">
+      <default>true</default>
+      <summary>Snow on Windows</summary>
+      <description>Snow settles along the tops of windows.</description>
+    </key>
+    <key name="behind-windows" type="b">
+      <default>false</default>
+      <summary>Behind Windows</summary>
+      <description>Snow falls on the desktop behind the windows instead of in front of them.</description>
+    </key>
+    <key name="show-in-screenshots" type="b">
+      <default>false</default>
+      <summary>Show in Screenshots</summary>
+      <description>Screenshots, screen recordings and screen sharing include the snow.</description>
+    </key>
+    <key name="open-at-login" type="b">
+      <default>true</default>
+      <summary>Open at Login</summary>
+      <description>Snowhush starts snowing when you log in.</description>
+    </key>
+    <key name="welcomed" type="b">
+      <default>false</default>
+      <summary>Welcomed</summary>
+      <description>The welcome window has been shown.</description>
+    </key>
+  </schema>
+</schemalist>

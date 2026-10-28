@@ -1,0 +1,15 @@
+{
+  "uuid": "snowhush@snowhush.pages.dev",
+  "name": "Snowhush",
+  "description": "It's snowing on your desktop. Soft snow drifts across your screen, settles along the tops of your windows and on the taskbar, and slips off when you drag them. Sweep the drift aside with your cursor.",
+  "shell-version": [
+    "46"
+  ],
+  "url": "https://github.com/noebachofner/Snowhush",
+  "settings-schema": "org.gnome.shell.extensions.snowhush",
+  "version-name": "0.5.6",
+  "session-modes": [
+    "user",
+    "unlock-dialog"
+  ]
+}
